@@ -1,16 +1,30 @@
 package repositories
 
 import (
+	"errors"
 	"gorm.io/gorm"
 	"mygram/model/entity"
 )
 
 type SocialMediaRepository interface {
+	CheckJWTSocmed(id int) error
 	GetAllSocialMedia() ([]entity.SocialMedia, error)
 	GetOneSocialMedia(user entity.SocialMedia) (entity.SocialMedia, error)
 	CreateSocialMedia(user entity.SocialMedia) (entity.SocialMedia, error)
 	UpdateSocialMedia(user entity.SocialMedia, id int) (entity.SocialMedia, error)
 	DeleteSocialMedia(id int) error
+}
+
+func (r *Repo) CheckJWTSocmed(id int) error {
+	var exist []entity.User
+	err := r.gorm.Where("id = ?", id).Find(&exist).Error
+	if err != nil {
+		return err
+	}
+	if len(exist) == 0 {
+		return errors.New("not_founs")
+	}
+	return nil
 }
 
 func (r *Repo) GetAllSocialMedia() ([]entity.SocialMedia, error) {

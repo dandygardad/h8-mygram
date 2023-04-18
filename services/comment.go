@@ -39,6 +39,11 @@ func (s *Service) GetOneComment(inputComment entity.Comment) (entity.Comment, er
 }
 
 func (s *Service) CreateComment(inputComment entity.Comment) (entity.Comment, error) {
+	err := s.comment.CheckJWTComment(int(inputComment.UserID))
+	if err != nil {
+		return entity.Comment{}, errors.New("not_found")
+	}
+
 	created, err := s.comment.CreateComment(inputComment)
 	if err != nil {
 		if errors.Is(err, gorm.ErrDuplicatedKey) {

@@ -7,11 +7,24 @@ import (
 )
 
 type CommentRepository interface {
+	CheckJWTComment(id int) error
 	GetAllComment(id int) ([]entity.Comment, error)
 	GetOneComment(inputComment entity.Comment) (entity.Comment, error)
 	CreateComment(inputComment entity.Comment) (entity.Comment, error)
 	UpdateComment(inputComment entity.Comment, id int) (entity.Comment, error)
 	DeleteComment(inputComment entity.Comment, id int) error
+}
+
+func (r *Repo) CheckJWTComment(id int) error {
+	var exist []entity.User
+	err := r.gorm.Where("id = ?", id).Find(&exist).Error
+	if err != nil {
+		return err
+	}
+	if len(exist) == 0 {
+		return errors.New("not_founs")
+	}
+	return nil
 }
 
 func (r *Repo) GetAllComment(id int) ([]entity.Comment, error) {

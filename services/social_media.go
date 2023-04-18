@@ -39,6 +39,12 @@ func (s *Service) GetOneSocialMedia(user entity.SocialMedia) (entity.SocialMedia
 }
 
 func (s *Service) CreateSocialMedia(user entity.SocialMedia) (entity.SocialMedia, error) {
+	// Check JWT
+	err := s.socmed.CheckJWTSocmed(int(user.UserID))
+	if err != nil {
+		return entity.SocialMedia{}, errors.New("not_found")
+	}
+
 	created, err := s.socmed.CreateSocialMedia(user)
 	if err != nil {
 		if errors.Is(err, gorm.ErrDuplicatedKey) {

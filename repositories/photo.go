@@ -1,16 +1,30 @@
 package repositories
 
 import (
+	"errors"
 	"gorm.io/gorm"
 	"mygram/model/entity"
 )
 
 type PhotoRepository interface {
+	CheckJWTPhoto(id int) error
 	GetAllPhoto() ([]entity.Photo, error)
 	GetOnePhoto(inputPhoto entity.Photo) (entity.Photo, error)
 	CreatePhoto(inputPhoto entity.Photo) (entity.Photo, error)
 	UpdatePhoto(inputPhoto entity.Photo, id int) (entity.Photo, error)
 	DeletePhoto(inputPhoto entity.Photo, id int) error
+}
+
+func (r *Repo) CheckJWTPhoto(id int) error {
+	var exist []entity.User
+	err := r.gorm.Where("id = ?", id).Find(&exist).Error
+	if err != nil {
+		return err
+	}
+	if len(exist) == 0 {
+		return errors.New("not_founs")
+	}
+	return nil
 }
 
 func (r *Repo) GetAllPhoto() ([]entity.Photo, error) {

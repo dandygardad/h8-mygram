@@ -39,6 +39,11 @@ func (s *Service) GetOnePhoto(inputUser entity.Photo) (entity.Photo, error) {
 }
 
 func (s *Service) CreatePhoto(inputUser entity.Photo) (entity.Photo, error) {
+	err := s.photo.CheckJWTPhoto(int(inputUser.UserID))
+	if err != nil {
+		return entity.Photo{}, errors.New("not_found")
+	}
+
 	created, err := s.photo.CreatePhoto(inputUser)
 	if err != nil {
 		if errors.Is(err, gorm.ErrDuplicatedKey) {
