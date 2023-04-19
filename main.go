@@ -22,7 +22,7 @@ import (
 // @contact.name   Dandy Garda
 // @contact.email  dandygarda@gmail.com
 
-// @host      localhost:8000
+// @host      https://h8-mygram-production.up.railway.app
 // @BasePath  /
 func main() {
 	godotenv.Load()
