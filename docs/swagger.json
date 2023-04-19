@@ -9,7 +9,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8000",
+    "host": "https://h8-mygram-production.up.railway.app",
     "basePath": "/",
     "paths": {
         "/comment/all/{id}": {

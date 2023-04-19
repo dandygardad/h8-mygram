@@ -102,7 +102,7 @@ definitions:
       social_media_url:
         type: string
     type: object
-host: localhost:8000
+host: https://h8-mygram-production.up.railway.app
 info:
   contact:
     email: dandygarda@gmail.com
