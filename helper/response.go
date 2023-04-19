@@ -25,6 +25,8 @@ func CustomErrorMsg(ctx *gin.Context, err error) {
 		ResponseError(ctx, "photo not found", http.StatusBadRequest)
 	case "already_exist":
 		ResponseError(ctx, "already exist", http.StatusBadRequest)
+	case "no_comments":
+		ResponseError(ctx, "no comments", http.StatusOK)
 	case "email_already_exist":
 		ResponseError(ctx, "Email already exist", http.StatusBadRequest)
 	case "user_not_exists":

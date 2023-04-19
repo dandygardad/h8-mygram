@@ -21,10 +21,14 @@ func Authentication() gin.HandlerFunc {
 		}
 
 		// Split token
-		strToken := strings.Split(inputAuth, " ")[1]
+		strToken := strings.Split(inputAuth, " ")
+		if len(strToken) == 1 {
+			helper.ResponseError(c, "unauthorized", http.StatusUnauthorized)
+			return
+		}
 
 		// Check token
-		token, _ := jwt.Parse(strToken, func(t *jwt.Token) (interface{}, error) {
+		token, err := jwt.Parse(strToken[1], func(t *jwt.Token) (interface{}, error) {
 			_, ok := t.Method.(*jwt.SigningMethodHMAC)
 			if !ok {
 				return nil, errors.New("unauthorized")
@@ -32,6 +36,10 @@ func Authentication() gin.HandlerFunc {
 
 			return []byte(os.Getenv("JWT_SECRET")), nil
 		})
+		if err != nil {
+			helper.ResponseError(c, "unauthorized", http.StatusUnauthorized)
+			return
+		}
 
 		// validate
 		result, ok := token.Claims.(jwt.MapClaims)

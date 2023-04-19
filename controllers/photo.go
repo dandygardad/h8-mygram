@@ -19,6 +19,16 @@ type PhotoController interface {
 	DeletePhoto(ctx *gin.Context)
 }
 
+// GetAllPhoto godoc
+// @Summary Get All Photo
+// @Description Get every photo
+// @tags photo
+// @Accept json
+// @Produce json
+// @Success 200 {object} []entity.Photo
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /photo [get]
 func (c *Controller) GetAllPhoto(ctx *gin.Context) {
 	results, err := c.photo.GetAllPhoto()
 	if err != nil {
@@ -28,6 +38,17 @@ func (c *Controller) GetAllPhoto(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, results)
 }
 
+// GetOnePhoto godoc
+// @Summary Get One Photo
+// @Description Get photo by id
+// @tags photo
+// @Accept json
+// @Produce json
+// @Param id path int true "ID photo"
+// @Success 200 {object} entity.Photo
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /photo/{id} [get]
 func (c *Controller) GetOnePhoto(ctx *gin.Context) {
 	id := ctx.Param("id")
 	cvtId, err := strconv.Atoi(id)
@@ -49,6 +70,18 @@ func (c *Controller) GetOnePhoto(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// CreatePhoto godoc
+// @Summary Create Photo
+// @Description Create new photo
+// @tags photo
+// @Accept json
+// @Produce json
+// @Param photo body web.PhotoRequest true "Request for photo"
+// @Param authorization header string true "Token" default(Bearer <insert-token>)
+// @Success 201 {object} entity.Photo
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /photo/create [post]
 func (c *Controller) CreatePhoto(ctx *gin.Context) {
 	var request web.PhotoRequest
 	err := ctx.ShouldBindJSON(&request)
@@ -85,6 +118,19 @@ func (c *Controller) CreatePhoto(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, result)
 }
 
+// UpdatePhoto godoc
+// @Summary Update Photo
+// @Description Update photo by id
+// @tags photo
+// @Accept json
+// @Produce json
+// @Param photo body web.PhotoRequest true "Request for photo"
+// @Param authorization header string true "Token" default(Bearer <insert-token>)
+// @Param id path int true "ID photo"
+// @Success 200 {object} entity.Photo
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /photo/update/{id} [put]
 func (c *Controller) UpdatePhoto(ctx *gin.Context) {
 	id := ctx.Param("id")
 	cvtId, err := strconv.Atoi(id)
@@ -127,6 +173,18 @@ func (c *Controller) UpdatePhoto(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// DeletePhoto godoc
+// @Summary Delete Photo
+// @Description Delete photo by id
+// @tags photo
+// @Accept json
+// @Produce json
+// @Param id path int true "ID photo"
+// @Param authorization header string true "Token" default(Bearer <insert-token>)
+// @Success 200 {object} entity.Photo
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /photo/delete/{id} [delete]
 func (c *Controller) DeletePhoto(ctx *gin.Context) {
 	id := ctx.Param("id")
 	cvtId, err := strconv.Atoi(id)

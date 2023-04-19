@@ -28,8 +28,14 @@ func (r *Repo) CheckJWTComment(id int) error {
 }
 
 func (r *Repo) GetAllComment(id int) ([]entity.Comment, error) {
+	var checkToken entity.Photo
+	err := r.gorm.Where("id = ?", id).First(&checkToken).Error
+	if err != nil {
+		return []entity.Comment{}, err
+	}
+
 	var comments []entity.Comment
-	err := r.gorm.Preload("User").Preload("Photo").Preload("Photo.User").Where("photo_id = ?", id).Find(&comments).Error
+	err = r.gorm.Preload("User").Preload("Photo").Preload("Photo.User").Where("photo_id = ?", id).Find(&comments).Error
 	if err != nil {
 		return []entity.Comment{}, err
 	}

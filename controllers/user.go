@@ -13,6 +13,17 @@ type UserController interface {
 	Login(ctx *gin.Context)
 }
 
+// Register godoc
+// @Summary Register User
+// @Description Create an account for user
+// @tags user
+// @Accept json
+// @Produce json
+// @Param user body web.RegisterRequest true "Create an account for user"
+// @Success 201 {object} entity.User
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /user/register [post]
 func (c *Controller) Register(ctx *gin.Context) {
 	var request web.RegisterRequest
 	err := ctx.ShouldBindJSON(&request)
@@ -43,6 +54,17 @@ func (c *Controller) Register(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, created)
 }
 
+// Login godoc
+// @Summary Login User
+// @Description Login for user
+// @tags user
+// @Accept json
+// @Produce json
+// @Param user body web.LoginRequest true "Login for user"
+// @Success 200 {object} web.ResponseLogin
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /user/login [post]
 func (c *Controller) Login(ctx *gin.Context) {
 	var request web.LoginRequest
 	err := ctx.ShouldBindJSON(&request)
@@ -71,9 +93,8 @@ func (c *Controller) Login(ctx *gin.Context) {
 
 	token := helper.GenerateToken(user)
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"token": token,
-		"data":  user,
+	ctx.JSON(http.StatusOK, web.ResponseLogin{
+		Token: token,
+		Data:  user,
 	})
-
 }

@@ -17,11 +17,14 @@ type CommentService interface {
 func (s *Service) GetAllComment(id int) ([]entity.Comment, error) {
 	results, err := s.comment.GetAllComment(id)
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return []entity.Comment{}, errors.New("photo_not_found")
+		}
 		return []entity.Comment{}, err
 	}
 
 	if len(results) == 0 {
-		return []entity.Comment{}, errors.New("photo_not_found")
+		return []entity.Comment{}, errors.New("no_comments")
 	}
 
 	return results, nil

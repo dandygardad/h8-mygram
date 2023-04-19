@@ -1,0 +1,671 @@
+basePath: /
+definitions:
+  entity.Photo:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+      user_id:
+        type: integer
+    type: object
+  entity.SocialMedia:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+      user_id:
+        type: integer
+    type: object
+  entity.User:
+    properties:
+      age:
+        type: integer
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  web.CommentRequest:
+    properties:
+      message:
+        type: string
+    type: object
+  web.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  web.PhotoRequest:
+    properties:
+      caption:
+        type: string
+      photo_url:
+        type: string
+      title:
+        type: string
+    type: object
+  web.RegisterRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  web.Response:
+    properties:
+      message:
+        type: string
+    type: object
+  web.ResponseLogin:
+    properties:
+      data:
+        $ref: '#/definitions/entity.User'
+      token:
+        type: string
+    type: object
+  web.SocialMediaRequest:
+    properties:
+      name:
+        type: string
+      social_media_url:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: dandygarda@gmail.com
+    name: Dandy Garda
+  description: Tempat untuk membuat user, social media, photo dan comment
+  title: MyGram API
+  version: "1.0"
+paths:
+  /comment/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get comment from id
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Photo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Get One Comment
+      tags:
+      - comment
+  /comment/all/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get every comment from photo id
+      parameters:
+      - description: Photo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Photo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Get All Comment
+      tags:
+      - comment
+  /comment/create/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Create comment from photo id
+      parameters:
+      - description: Photo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <insert-token>
+        description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Request for comment
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/web.CommentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Photo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Create Comment
+      tags:
+      - comment
+  /comment/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete comment from id
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <insert-token>
+        description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Photo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Delete Comment
+      tags:
+      - comment
+  /comment/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update comment from id
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <insert-token>
+        description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Request for comment
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/web.CommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Photo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Update Comment
+      tags:
+      - comment
+  /photo:
+    get:
+      consumes:
+      - application/json
+      description: Get every photo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Photo'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Get All Photo
+      tags:
+      - photo
+  /photo/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get photo by id
+      parameters:
+      - description: ID photo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Photo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Get One Photo
+      tags:
+      - photo
+  /photo/create:
+    post:
+      consumes:
+      - application/json
+      description: Create new photo
+      parameters:
+      - description: Request for photo
+        in: body
+        name: photo
+        required: true
+        schema:
+          $ref: '#/definitions/web.PhotoRequest'
+      - default: Bearer <insert-token>
+        description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Photo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Create Photo
+      tags:
+      - photo
+  /photo/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete photo by id
+      parameters:
+      - description: ID photo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <insert-token>
+        description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Photo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Delete Photo
+      tags:
+      - photo
+  /photo/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update photo by id
+      parameters:
+      - description: Request for photo
+        in: body
+        name: photo
+        required: true
+        schema:
+          $ref: '#/definitions/web.PhotoRequest'
+      - default: Bearer <insert-token>
+        description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: ID photo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Photo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Update Photo
+      tags:
+      - photo
+  /socmed:
+    get:
+      consumes:
+      - application/json
+      description: Get every social media on MyGram
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.SocialMedia'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Get All Social Media
+      tags:
+      - socmed
+  /socmed/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get one social media based by ID
+      parameters:
+      - description: ID social media
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SocialMedia'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Get One Social Media
+      tags:
+      - socmed
+  /socmed/create:
+    post:
+      consumes:
+      - application/json
+      description: Create social media from user id
+      parameters:
+      - description: Request for social media
+        in: body
+        name: socmed
+        required: true
+        schema:
+          $ref: '#/definitions/web.SocialMediaRequest'
+      - default: Bearer <insert-token>
+        description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SocialMedia'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Create Social Media
+      tags:
+      - socmed
+  /socmed/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete data social media from user id
+      parameters:
+      - default: Bearer <insert-token>
+        description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Delete Social Media
+      tags:
+      - socmed
+  /socmed/update:
+    put:
+      consumes:
+      - application/json
+      description: Update data social media from user id
+      parameters:
+      - description: Request for social media
+        in: body
+        name: socmed
+        required: true
+        schema:
+          $ref: '#/definitions/web.SocialMediaRequest'
+      - default: Bearer <insert-token>
+        description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SocialMedia'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Update Social Media
+      tags:
+      - socmed
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Login for user
+      parameters:
+      - description: Login for user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/web.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.ResponseLogin'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Login User
+      tags:
+      - user
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Create an account for user
+      parameters:
+      - description: Create an account for user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/web.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Register User
+      tags:
+      - user
+swagger: "2.0"

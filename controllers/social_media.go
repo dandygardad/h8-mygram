@@ -19,6 +19,16 @@ type SocialMediaController interface {
 	DeleteSocialMedia(ctx *gin.Context)
 }
 
+// GetAllSocialMedia godoc
+// @Summary Get All Social Media
+// @Description Get every social media on MyGram
+// @tags socmed
+// @Accept json
+// @Produce json
+// @Success 200 {object} []entity.SocialMedia
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /socmed [get]
 func (c *Controller) GetAllSocialMedia(ctx *gin.Context) {
 	results, err := c.socmed.GetAllSocialMedia()
 	if err != nil {
@@ -28,6 +38,17 @@ func (c *Controller) GetAllSocialMedia(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, results)
 }
 
+// GetOneSocialMedia godoc
+// @Summary Get One Social Media
+// @Description Get one social media based by ID
+// @tags socmed
+// @Accept json
+// @Produce json
+// @Param id path int true "ID social media"
+// @Success 200 {object} entity.SocialMedia
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /socmed/{id} [get]
 func (c *Controller) GetOneSocialMedia(ctx *gin.Context) {
 	id := ctx.Param("id")
 	cvtId, err := strconv.Atoi(id)
@@ -49,6 +70,18 @@ func (c *Controller) GetOneSocialMedia(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// CreateSocialMedia godoc
+// @Summary Create Social Media
+// @Description Create social media from user id
+// @tags socmed
+// @Accept json
+// @Produce json
+// @Param socmed body web.SocialMediaRequest true "Request for social media"
+// @Param authorization header string true "Token" default(Bearer <insert-token>)
+// @Success 200 {object} entity.SocialMedia
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /socmed/create [post]
 func (c *Controller) CreateSocialMedia(ctx *gin.Context) {
 	var request web.SocialMediaRequest
 	err := ctx.ShouldBindJSON(&request)
@@ -84,6 +117,18 @@ func (c *Controller) CreateSocialMedia(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, result)
 }
 
+// UpdateSocialMedia godoc
+// @Summary Update Social Media
+// @Description Update data social media from user id
+// @tags socmed
+// @Accept json
+// @Produce json
+// @Param socmed body web.SocialMediaRequest true "Request for social media"
+// @Param authorization header string true "Token" default(Bearer <insert-token>)
+// @Success 200 {object} entity.SocialMedia
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /socmed/update [put]
 func (c *Controller) UpdateSocialMedia(ctx *gin.Context) {
 	var request web.SocialMediaRequest
 	err := ctx.ShouldBindJSON(&request)
@@ -118,6 +163,17 @@ func (c *Controller) UpdateSocialMedia(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// DeleteSocialMedia godoc
+// @Summary Delete Social Media
+// @Description Delete data social media from user id
+// @tags socmed
+// @Accept json
+// @Produce json
+// @Param authorization header string true "Token" default(Bearer <insert-token>)
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router /socmed/delete [delete]
 func (c *Controller) DeleteSocialMedia(ctx *gin.Context) {
 	// Get data from jwt
 	jwtData, _ := ctx.Get("userData")
