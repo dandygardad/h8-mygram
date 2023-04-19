@@ -3,6 +3,8 @@
 ## Deskripsi Project
 Project ini berfokus dalam pembuatan aplikasi untuk MyGram, dimana dalam aplikasi ini dapat bekerja seperti sosial media, yaitu menyimpan foto, membuat comment untuk foto orang lain. 
 
+Link API Docs: [https://h8-mygram-production.up.railway.app/docs/index.html](https://h8-mygram-production.up.railway.app/docs/index.html)
+
 Berikut library yang digunakan adalah:
 - Gin gonic untuk web service
 - Gorm untuk ORM
